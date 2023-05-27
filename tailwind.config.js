@@ -5,7 +5,7 @@ export default {
     purgeLayersByDefault: true,
     defaultLineHeights: true,
     standardFontWeights: true,
-  }
+  },
   content: ["./src/**/*.svelte"],
   theme: {
     extend: {},
