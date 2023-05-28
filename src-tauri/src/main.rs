@@ -37,7 +37,10 @@ struct State {
 }
 struct StateGlobalCpuUsage {
     nb_subscribers: AtomicU64,
-    thread: Mutex<Option<std::thread::JoinHandle<()>>>,
+    thread: Mutex<Option<CpuUsageThread>>,
+}
+
+struct CpuUsageThread {
     stop_notifier: Arc<AtomicBool>,
 }
 
@@ -46,7 +49,6 @@ impl StateGlobalCpuUsage {
         Self {
             nb_subscribers: AtomicU64::new(0),
             thread: Mutex::new(None),
-            stop_notifier: Arc::new(AtomicBool::new(false)),
         }
     }
 
@@ -55,10 +57,9 @@ impl StateGlobalCpuUsage {
 
         let mut thread = self.thread.lock().unwrap();
         if thread.is_none() {
-            self.stop_notifier.store(false, Ordering::SeqCst);
-
-            let stopper = Arc::clone(&self.stop_notifier);
-            *thread = Some(std::thread::spawn(move || {
+            let stop_notifier = Arc::new(AtomicBool::new(false));
+            let stopper = Arc::clone(&stop_notifier);
+            std::thread::spawn(move || {
                 while !stopper.load(Ordering::SeqCst) {
                     {
                         let mut sys = sys.lock().unwrap();
@@ -70,15 +71,18 @@ impl StateGlobalCpuUsage {
                     }
                     std::thread::sleep(std::time::Duration::from_secs(1));
                 }
-            }));
+            });
+            *thread = Some(CpuUsageThread { stop_notifier });
         }
     }
 
     fn unsubscribe(&self) {
         let prev = self.nb_subscribers.fetch_sub(1, Ordering::SeqCst);
         if prev == 1 {
-            self.stop_notifier.store(true, Ordering::SeqCst);
-            *self.thread.lock().unwrap() = None;
+            let thread = self.thread.lock().unwrap().take();
+            if let Some(thread) = thread {
+                thread.stop_notifier.store(true, Ordering::SeqCst);
+            }
         }
     }
 }
