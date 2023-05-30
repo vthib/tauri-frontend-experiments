@@ -1,0 +1,13 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "scripts": {
+    "css": "tailwindcss -i styles.postcss -o ../assets/generated/output.css",
+    "chart": "esbuild --bundle chart.js --outfile=../assets/generated/chart.js --format=esm"
+  },
+  "devDependencies": {
+    "chart.js": "^4.3.0",
+    "esbuild": "^0.17.19",
+    "tailwindcss": "^3.3.2"
+  }
+}
