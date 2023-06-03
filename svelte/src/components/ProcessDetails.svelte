@@ -7,10 +7,8 @@
 
     let values = Array(180).fill(undefined);
 
-    console.log(process);
     let processStore = generateProcessStore(process.info.pid);
     $: {
-        console.log($processStore);
         if ($processStore) {
             const [, ...cdr] = values;
             values = [...cdr, $processStore.resources.cpu_usage];

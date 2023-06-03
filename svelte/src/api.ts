@@ -16,7 +16,6 @@ export interface Process {
 }
 
 export async function getProcess(pid: number): Promise<Process | undefined> {
-    console.log(`invoke ${pid}`)
     return await invoke('get_process', { pid })
 }
 

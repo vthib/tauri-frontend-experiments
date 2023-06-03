@@ -27,7 +27,6 @@ export function createGlobalCpuUsageStore() {
                 });
 
             return () => {
-                console.log("unsub!");
                 subscribed = false;
                 unsub();
                 if (unlisten !== undefined) {
