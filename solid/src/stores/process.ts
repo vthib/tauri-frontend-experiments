@@ -12,7 +12,6 @@ export function processStore(pid: number): Store<Content> {
 
     let interval = setInterval(() => {
         getProcess(pid).then((proc) => {
-            console.log('set process');
             setProcess('process', proc);
         });
     }, 1000);

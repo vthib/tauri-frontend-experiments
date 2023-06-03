@@ -72,7 +72,6 @@ export default function Processes() {
                 setSortDirection("none");
                 break;
         }
-        console.log(`set sort dir to ${sortDirection()}`);
     };
 
     let processesStore = processes();
