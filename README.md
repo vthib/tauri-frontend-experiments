@@ -4,6 +4,7 @@ This repository contains experiments with Tauri and different frontend framework
 
 - Tauri + Svelte + Typescript + Tailwindcss
 - Tauri + Solidjs + Typescript + Tailwindcss
+- Tauri + Vue (composition) + Typescript + Tailwindcss
 - Tauri + Leptos + Tailwindcss
 
 # Description
@@ -18,17 +19,18 @@ The frontend however is written in different frameworks, so that they can be com
 There are also some other design decisions that are shared by all implementations.
 
 - All implementations must have good type checking. For JS frameworks this means
-  `Typescript`, and a good implementation of it. Notably, this excludes `Vue.js`,
-  and if possible, it uses the strictest configuration possible.
+  `Typescript`, and a good implementation of it. Notably, this excludes `Vue.js`
+  with the option API, and if possible, it uses the strictest configuration possible.
 
 - All implementations use `tailwind` for CSS. No particular reason here, just
   wanted to try it, and using the same one for all also allows some comparison.
 
-There are three implementations for the moment, each one lives in the corresponding
+There are four implementations for the moment, each one lives in the corresponding
 folder, with a README file containing some observations.
 
 - `Svelte`
 - `Solidjs`
+- `Vue`
 - `Leptos`
 
 # Design caveats
